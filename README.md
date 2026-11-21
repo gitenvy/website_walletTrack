@@ -15,11 +15,16 @@ Phone app and pitch demo for the wearable that taps your wrist before you leave 
 
 The two pages must be served over HTTP (not opened as a file), so the presenter can control the app frame.
 
+**Easiest:** double-click **`start-tali.bat`**. It serves this folder and opens the demo in your browser.
+
+Or from PowerShell, **inside this folder** (no `-d` option, which would serve a different folder):
+
 ```powershell
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000>. To show it on your phone, put the folder on any static host
+Then open <http://localhost:8000>. If you see a different "Wallet Tracker" page instead, another server is already
+using port 8000: close it, or let `start-tali.bat` move Tali to port 8001. To show it on your phone, put the folder on any static host
 (GitHub Pages, Netlify Drop or Vercel) and open the link.
 
 ## Pitch flow (3 minutes)
