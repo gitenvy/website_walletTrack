@@ -1,14 +1,17 @@
 @echo off
 rem Start the Tali demo. Double-click this file, or run start-tali.bat from any folder.
-rem Always serves THIS folder (the Tali app), on port 8000, or 8001 if 8000 is already in use.
+rem Always serves THIS folder (the Tali app) on port 8001 (port 8000 is used by the team's other Wallet Tracker page).
 
 cd /d "%~dp0"
+set PORT=8001
 
-set PORT=8000
-netstat -ano | findstr /R /C:":8000 .*LISTENING" >nul
+netstat -ano | findstr /R /C:":%PORT% .*LISTENING" >nul
 if not errorlevel 1 (
-  echo Port 8000 is already used by another program, so Tali will use port 8001.
-  set PORT=8001
+  echo Port %PORT% is already in use. If Tali is already running, just open http://localhost:%PORT%
+  echo Otherwise close the other program using port %PORT% and try again.
+  start "" "http://localhost:%PORT%"
+  pause
+  exit /b 1
 )
 
 where python >nul 2>nul

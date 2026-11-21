@@ -15,17 +15,38 @@ Phone app and pitch demo for the wearable that taps your wrist before you leave 
 
 The two pages must be served over HTTP (not opened as a file), so the presenter can control the app frame.
 
-**Easiest:** double-click **`start-tali.bat`**. It serves this folder and opens the demo in your browser.
+Tali runs on **port 8001**, so it never clashes with the team's other "Wallet Tracker" page on port 8000.
 
-Or from PowerShell, **inside this folder** (no `-d` option, which would serve a different folder):
+### Open it
+
+| Page | Address |
+| --- | --- |
+| Pitch demo (phone frame + presenter controls) | **<http://localhost:8001>** |
+| App only (full screen, best on a phone) | **<http://localhost:8001/app.html>** |
+
+### Start the server first
+
+**Windows:** double-click **`start-tali.bat`**. It serves this folder on port 8001 and opens the demo in your browser.
+Or in PowerShell, **inside this folder**:
 
 ```powershell
-python -m http.server 8000
+python -m http.server 8001
 ```
 
-Then open <http://localhost:8000>. If you see a different "Wallet Tracker" page instead, another server is already
-using port 8000: close it, or let `start-tali.bat` move Tali to port 8001. To show it on your phone, put the folder on any static host
-(GitHub Pages, Netlify Drop or Vercel) and open the link.
+**Mac:** in Terminal, **inside this folder**:
+
+```bash
+python3 -m http.server 8001
+```
+
+(If macOS offers to install the Command Line Tools, accept, then run the command again.)
+
+Keep that window open while you use the demo; press **Ctrl+C** in it to stop. Don't add `-d website`, which serves a
+different folder. If <http://localhost:8001> shows anything other than the Tali demo, check that you started the
+server from inside this folder.
+
+**On your phone (same Wi-Fi):** find the laptop's IP address (Windows: `ipconfig`, Mac: System Settings → Wi-Fi → Details),
+then open `http://<that-IP>:8001` on the phone, e.g. `http://192.168.1.23:8001`. Allow Python through the firewall if asked.
 
 ## Pitch flow (3 minutes)
 
