@@ -249,3 +249,9 @@ a { color: var(--accent); }
   .band-chip.ringing { background: var(--alert); animation: shake .09s linear infinite; }
   .band-chip.ringing .chip-led { background: #fff; animation: blink .3s steps(2) infinite; }
 }
+
+/* Gotcha mark: teal tile, open white ring (your safe circle), coral dot = an item that left it */
+.brand-mark .lg-bg, .notif-app svg .lg-bg { fill: #0E7C7B; }
+.brand-mark .lg-ring, .notif-app svg .lg-ring { fill: none; stroke: #FFFFFF; stroke-width: 3.4; stroke-linecap: round; }
+.brand-mark .lg-dot, .notif-app svg .lg-dot { fill: #FF9A76; }
+.brand-name, .brand b { font-family: "Inter Tight", Inter, system-ui, sans-serif; font-weight: 700; letter-spacing: -.045em; }

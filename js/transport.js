@@ -41,14 +41,14 @@
   SimTransport.prototype._emit = function () {
     var w = this.world;
     if (!w.rx || !this.linkUp()) return;
-    this.onSnap(w.rx.snapshot(w.t, { receiver: 'Gotcha Bracelet', battery_pct: Math.round(w.rxBattery) }));
+    this.onSnap(w.rx.snapshot(w.t, { receiver: 'Gotcha Pendant', battery_pct: Math.round(w.rxBattery) }));
   };
 
   SimTransport.prototype._later = function (fn) {
     var self = this;
     return new Promise(function (res, rej) {
       setTimeout(function () {
-        if (!self.world.rx || !self.linkUp()) return rej(new Error('Bracelet did not respond'));
+        if (!self.world.rx || !self.linkUp()) return rej(new Error('Pendant did not respond'));
         try { res(fn()); } catch (e) { rej(e); }
       }, 350 + Math.random() * 550);
     });
@@ -57,7 +57,7 @@
   SimTransport.prototype.syncCarry = function (list) {
     var self = this;
     return this._later(function () {
-      if (self.failNextAck) { self.failNextAck = false; throw new Error('No acknowledgement from bracelet'); }
+      if (self.failNextAck) { self.failNextAck = false; throw new Error('No acknowledgement from pendant'); }
       self.world.saveList(list);
       return { ack: true, rev: list.rev };
     });
@@ -103,7 +103,7 @@
     var opts = Object.assign({ method: method || 'GET', cache: 'no-store' }, withTimeout(2500));
     if (body !== undefined) { opts.headers = { 'Content-Type': 'application/json' }; opts.body = JSON.stringify(body); }
     return fetch(this.base + path, opts).then(function (r) {
-      if (!r.ok) throw new Error('Bracelet returned HTTP ' + r.status);
+      if (!r.ok) throw new Error('Pendant returned HTTP ' + r.status);
       return r.json();
     });
   };
@@ -123,7 +123,7 @@
 
   HttpTransport.prototype.syncCarry = function (list) {
     return this._req('/api/carry', 'POST', list).then(function (j) {
-      if (!j || !j.ack) throw new Error('Bracelet did not acknowledge');
+      if (!j || !j.ack) throw new Error('Pendant did not acknowledge');
       return j;
     });
   };

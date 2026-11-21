@@ -497,3 +497,20 @@ h4, .eyebrow { color: var(--accent-deep); letter-spacing: .1em; }
 .notif { background: rgba(246, 246, 243, .16); border-radius: 22px; }
 .notif-app svg rect { fill: var(--accent); }
 .notif-app svg circle { fill: #FFFFFF; }
+
+/* simpler Today card: one bear, one line of state, one sentence */
+.hero { padding: 18px 20px; gap: 16px; }
+.hero .eyebrow, .hero .hero-meta { display: none; }
+.hero-title { font-size: 25px; }
+.hero-sub { margin-top: 6px; font-size: 15px; }
+.bear-art { width: 84px; height: 84px; }
+.bear-art .ear, .bear-art .head { fill: #F4A6B7; }
+.bear-art .ear-in, .bear-art .muzzle { fill: #FBD3DC; }
+.bear-art .eye { fill: #15191C; }
+.bear-art .led { fill: var(--state, var(--accent)); stroke: #FFFFFF; stroke-width: 2; }
+
+/* Gotcha mark: teal tile, open white ring (your safe circle), coral dot = an item that left it */
+.brand-mark .lg-bg, .notif-app svg .lg-bg { fill: #0E7C7B; }
+.brand-mark .lg-ring, .notif-app svg .lg-ring { fill: none; stroke: #FFFFFF; stroke-width: 3.4; stroke-linecap: round; }
+.brand-mark .lg-dot, .notif-app svg .lg-dot { fill: #FF9A76; }
+.brand-name, .brand b { font-family: "Inter Tight", Inter, system-ui, sans-serif; font-weight: 700; letter-spacing: -.045em; }

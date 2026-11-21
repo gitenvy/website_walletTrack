@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
-  <meta name="description" content="Gotcha: control centre for the bracelet that vibrates before you leave something behind.">
+  <meta name="description" content="Gotcha: control centre for the pendant that vibrates before you leave something behind.">
   <title>Gotcha</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e8f7e'/%3E%3Ccircle cx='10' cy='16' r='4' fill='white'/%3E%3Ccircle cx='23' cy='16' r='2.6' fill='white'/%3E%3Cpath d='M14 16c2.5-4 4.5-4 6.4 0' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230E7C7B'/%3E%3Cpath d='M23.88 14.61A8 8 0 1 1 18.74 8.48' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'/%3E%3Ccircle cx='24.4' cy='8.9' r='2.7' fill='%23FF9A76'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css?v=17">
+  <link rel="stylesheet" href="css/app.css?v=21">
 </head>
 <body>
   <div class="statusbar" aria-hidden="true">
@@ -36,7 +36,7 @@
 
   <header class="topbar">
     <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><circle cx="10" cy="16" r="4"/><circle cx="23" cy="16" r="2.6"/><path d="M14 16c2.5-4 4.5-4 6.4 0"/></svg>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="lg-bg" width="32" height="32" rx="9"/><path class="lg-ring" d="M23.88 14.61A8 8 0 1 1 18.74 8.48"/><circle class="lg-dot" cx="24.4" cy="8.9" r="2.7"/></svg>
       <span class="brand-name">gotcha</span>
           </div>
     <button class="link-chip" id="linkChip" type="button" aria-live="polite" data-goto="settings">
@@ -51,18 +51,21 @@
       <section class="view" id="view-today" data-view="today" aria-labelledby="h-today">
         <h1 class="sr-only" id="h-today">Today</h1>
         <div class="hero card" id="hero">
-          <div class="band-art" id="bandArt" aria-hidden="true">
+          <div class="band-art bear-art" id="bandArt" aria-hidden="true">
             <svg viewBox="0 0 120 120">
-              <circle class="ripple r1" cx="60" cy="60" r="40"/>
-              <circle class="ripple r2" cx="60" cy="60" r="40"/>
-              <path class="strap" d="M38 14c-6 14-6 78 0 92M82 14c6 14 6 78 0 92"/>
-              <rect class="pod" x="34" y="34" width="52" height="52" rx="16"/>
-              <circle class="led" cx="60" cy="60" r="7"/>
+              <circle class="ripple r1" cx="60" cy="66" r="40"/>
+              <circle class="ripple r2" cx="60" cy="66" r="40"/>
+              <circle class="ear" cx="30" cy="34" r="15"/><circle class="ear-in" cx="30" cy="34" r="8"/>
+              <circle class="ear" cx="90" cy="34" r="15"/><circle class="ear-in" cx="90" cy="34" r="8"/>
+              <circle class="head" cx="60" cy="64" r="38"/>
+              <ellipse class="muzzle" cx="60" cy="78" rx="18" ry="14"/>
+              <circle class="eye" cx="46" cy="58" r="4"/><circle class="eye" cx="74" cy="58" r="4"/>
+              <circle class="led" cx="60" cy="76" r="6"/>
             </svg>
           </div>
           <div class="hero-body">
             <p class="eyebrow" id="heroEyebrow">Today's carry</p>
-            <h2 class="hero-title" id="heroTitle">Connecting to bracelet…</h2>
+            <h2 class="hero-title" id="heroTitle">Connecting to pendant…</h2>
             <p class="hero-sub" id="heroSub"></p>
             <div class="hero-meta" id="heroMeta"></div>
           </div>
@@ -78,7 +81,7 @@
       <!-- MY ITEMS -->
       <section class="view" id="view-items" data-view="items" aria-labelledby="h-items" hidden>
         <div class="page-head">
-          <div><h1 id="h-items">My items</h1><p class="muted">Tags and phones paired to your bracelet.</p></div>
+          <div><h1 id="h-items">My items</h1><p class="muted">Tags and phones paired to your pendant.</p></div>
           <button class="btn primary" id="addTagBtn" type="button">Add a tag</button>
         </div>
         <div class="stack" id="itemsList"></div>
@@ -87,7 +90,7 @@
       <!-- LISTS -->
       <section class="view" id="view-lists" data-view="lists" aria-labelledby="h-lists" hidden>
         <div class="page-head">
-          <div><h1 id="h-lists">Carry lists</h1><p class="muted">Pick what you bring for each routine. The bracelet checks the active list on its own, even with your phone away.</p></div>
+          <div><h1 id="h-lists">Carry lists</h1><p class="muted">Pick what you bring for each routine. The pendant checks the active list on its own, even with your phone away.</p></div>
           <button class="btn" id="newListBtn" type="button">New list</button>
         </div>
         <div class="stack" id="listsList"></div>
@@ -112,24 +115,24 @@
 
       <!-- SETTINGS -->
       <section class="view" id="view-settings" data-view="settings" aria-labelledby="h-settings" hidden>
-        <div class="page-head"><div><h1 id="h-settings">Settings</h1><p class="muted">Bracelet connection and alert behaviour.</p></div></div>
+        <div class="page-head"><div><h1 id="h-settings">Settings</h1><p class="muted">Pendant connection and alert behaviour.</p></div></div>
         <div class="card">
           <h3>Data source</h3>
           <div class="seg" role="radiogroup" aria-label="Data source" id="modeSeg">
-            <button type="button" role="radio" data-mode="sim">Demo bracelet</button>
-            <button type="button" role="radio" data-mode="live">Bracelet (Wi-Fi)</button>
+            <button type="button" role="radio" data-mode="sim">Demo pendant</button>
+            <button type="button" role="radio" data-mode="live">Pendant (Wi-Fi)</button>
           </div>
           <div class="live-fields" id="liveFields">
-            <label class="field"><span>Bracelet address</span>
+            <label class="field"><span>Pendant address</span>
               <input id="rxUrl" type="url" inputmode="url" placeholder="http://192.168.4.1" autocomplete="off" spellcheck="false">
             </label>
-            <p class="muted small">Join the bracelet's Wi-Fi (<code>Gotcha-XXXX</code>) or the same network. When this page is served from the bracelet itself, leave the field empty. Browsers block plain-HTTP device calls from HTTPS pages.</p>
+            <p class="muted small">Join the pendant's Wi-Fi (<code>Gotcha-XXXX</code>) or the same network. When this page is served from the pendant itself, leave the field empty. Browsers block plain-HTTP device calls from HTTPS pages.</p>
             <button class="btn primary" id="connectBtn" type="button">Connect</button>
           </div>
         </div>
         <div class="card">
           <h3>Alert rule</h3>
-          <p class="muted small">How long an item must stay out of range after you start moving before the bracelet vibrates. Shorter rules warn sooner but raise more false alerts.</p>
+          <p class="muted small">How long an item must stay out of range after you start moving before the pendant vibrates. Shorter rules warn sooner but raise more false alerts.</p>
           <div class="seg" role="radiogroup" aria-label="Confirmation window" id="ruleSeg">
             <button type="button" role="radio" data-rule="0">Immediate</button>
             <button type="button" role="radio" data-rule="3000">3 s</button>
@@ -148,7 +151,7 @@
         </div>
         <div class="card">
           <h3>Developers</h3>
-          <p class="muted small">The bracelet firmware implements the HTTP API in <a href="docs/API.md">docs/API.md</a>. The alert state machine in <code>js/engine.js</code> is the reference for the firmware logic.</p>
+          <p class="muted small">The pendant firmware implements the HTTP API in <a href="docs/API.md">docs/API.md</a>. The alert state machine in <code>js/engine.js</code> is the reference for the firmware logic.</p>
           <div class="row gap">
             <button class="btn" id="resetBtn" type="button">Reset demo data</button>
           </div>
@@ -178,8 +181,8 @@
 
   <div class="toasts" id="toasts" aria-live="polite"></div>
 
-  <script src="js/engine.js?v=17"></script>
-  <script src="js/transport.js?v=17"></script>
-  <script src="js/app.js?v=17"></script>
+  <script src="js/engine.js?v=21"></script>
+  <script src="js/transport.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
 </body>
 </html>

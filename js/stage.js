@@ -13,34 +13,34 @@
      {item} is replaced with the wallet's name, {phone} with the phone's name. */
   var MOMENTS = [
     { k: 'leave', title: 'You forget your wallet', desc: 'Leave the wallet on the table and walk out with your phone in your pocket.', steps: [
-      { at: 0, t: 'At a customer site, your {item}, tool pouch and {phone} are all tagged and with you. The bracelet light glows green.' },
+      { at: 0, t: 'At a customer site, your {item}, tool pouch and {phone} are all tagged and with you. The pendant light glows green.' },
       { at: 1200, t: 'You put your {item} down on the table.' },
       { at: 2200, t: 'Job done. You pocket your phone and head for the door.', lock: true },
-      { on: 'alert', t: 'Before you reach the door, your bracelet vibrates on your wrist and its light turns red. The companion app tells you which item: the {item}.', alert: true, next: 'Press "Walk back", or press the bracelet button to stop the vibration.' },
-      { on: 'recovered', t: 'Back at the table, the {item} is in range again and the bracelet stops vibrating by itself. Can\'t see it? Make the tag beep from the app.', next: 'Tap "Ring" on the Wallet card in the app, then "Stop ringing" once you find it.' }
+      { on: 'alert', t: 'Before you reach the door, your pendant vibrates on you and its light turns red. The companion app tells you which item: the {item}.', alert: true, next: 'Press "Walk back", or press the pendant button to stop the vibration.' },
+      { on: 'recovered', t: 'Back at the table, the {item} is in range again and the pendant stops vibrating by itself. Can\'t see it? Make the tag beep from the app.', next: 'Tap "Ring" on the Wallet card in the app, then "Stop ringing" once you find it.' }
     ] },
     { k: 'carry', title: 'You leave with everything', desc: 'Everything goes in your bag. Gotcha should stay silent.', steps: [
       { at: 0, t: 'Your {item}, pouch and {phone} all go in your bag.' },
       { at: 1500, t: 'You walk out.', lock: true },
-      { on: 'quiet', t: 'You are outside and the bracelet never rang. No false alarms when nothing is missing.' }
+      { on: 'quiet', t: 'You are outside and the pendant never rang. No false alarms when nothing is missing.' }
     ] },
     { k: 'loan', title: 'A friend borrows your phone', desc: 'They walk off with it while you sit. Lending should not raise an alarm.', steps: [
       { at: 0, t: 'You are sitting down with your {phone}, {item} and pouch.' },
       { at: 1000, t: 'A friend borrows your {phone} and walks away. You stay seated.' },
-      { on: 'suppressed', t: 'The {phone} left while you were still, so the bracelet treats it as a loan and stays quiet.' },
+      { on: 'suppressed', t: 'The {phone} left while you were still, so the pendant treats it as a loan and stays quiet.' },
       { at: 11000, t: 'Later you get up and leave. Still quiet, because the {phone} was already away before you moved.' }
     ] },
     { k: 'shielded', title: 'Wallet in a foil-lined bag', desc: 'Honest limitation: a shielded tag can cause a false alert.', lim: true, steps: [
       { at: 0, t: 'Your {item} is inside a foil-lined bag.' },
       { at: 1200, t: 'The lining blocks the tag\'s Bluetooth signal.' },
       { at: 2200, t: 'You walk out with everything.', lock: true },
-      { on: 'alert', t: 'False alarm: the bracelet can\'t hear a shielded tag, so it vibrates. We measure how often this happens in the pilot.', alert: true }
+      { on: 'alert', t: 'False alarm: the pendant can\'t hear a shielded tag, so it vibrates. We measure how often this happens in the pilot.', alert: true }
     ] },
     { k: 'dead', title: 'Tag battery dies', desc: 'Honest limitation: a dead tag looks the same as a missing one.', lim: true, steps: [
       { at: 0, t: 'Everything is with you.' },
       { at: 1500, t: 'You walk out.', lock: true },
       { at: 4500, t: 'The {item} tag\'s battery dies on the way.' },
-      { on: 'alert', t: 'The bracelet vibrates because the tag went silent. The app keeps the last battery reading so you can tell why.', alert: true }
+      { on: 'alert', t: 'The pendant vibrates because the tag went silent. The app keeps the last battery reading so you can tell why.', alert: true }
     ] }
   ];
 
@@ -149,11 +149,11 @@
     renderMoments();
   }
 
-  /* ---------------- master bracelet ----------------
+  /* ---------------- master pendant ----------------
      Vibrates only (no sound), in pulses, while any item is in "check" (left behind as you moved). It stops by itself
      when the item is back in range, or when you press its button (stopped for that incident only). */
   var silenced = {}, beepTimer = null;
-  /* On a phone, let the audience feel the same pulse: 600 ms buzz every second, like the bracelet */
+  /* On a phone, let the audience feel the same pulse: 600 ms buzz every second, like the pendant */
   function ringTone() {
     if (!$('#optSound').checked || !navigator.vibrate) return;
     try { navigator.vibrate([600]); } catch (e) { /* not supported */ }
@@ -189,7 +189,7 @@
     var chip = $('#bandChip');
     chip.dataset.tone = tone;
     chip.classList.toggle('ringing', ringing.length > 0);
-    put('#chipText', ringing.length ? 'Bracelet vibrating · ' + ringing[0].name + ' · tap to stop' : 'Bracelet · ' + title.toLowerCase());
+    put('#chipText', ringing.length ? 'Pendant vibrating · ' + ringing[0].name + ' · tap to stop' : 'Pendant · ' + title.toLowerCase());
     if (ringing.length && !beepTimer) { ringTone(); beepTimer = setInterval(ringTone, 1000); }
     else if (!ringing.length && beepTimer) { clearInterval(beepTimer); beepTimer = null; }
     lastRinging = ringing;
