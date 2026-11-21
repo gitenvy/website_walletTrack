@@ -1,4 +1,4 @@
-/* Tali pitch stage: phone frame + presenter panel */
+/* Gotcha pitch stage: phone frame + presenter panel */
 :root {
   --bg: #eef0f3; --surface: #ffffff; --surface-2: #f2f3f6; --text: #15171a; --muted: #62666e;
   --line: rgba(20, 24, 31, .09); --line-strong: rgba(20, 24, 31, .16);

@@ -1,21 +1,21 @@
-# Tali: wearable belongings reminder
+# Gotcha: wearable belongings reminder
 
 Phone app and pitch demo for the wearable that taps your wrist before you leave an item behind.
 
 | File | What it is |
 | --- | --- |
-| `index.html` | **Pitch stage.** Shows the **Tali bracelet** (the master device: a slim, screenless band with a tiny module holding a vibration motor, an LED and one button) next to the **companion app** in a phone frame. A presenter panel triggers real-life moments with narration and a room map. When you walk away from a tagged item, the bracelet vibrates in pulses and its LED turns red; press its button to stop it. It stops by itself once the item is back in range. It never makes a sound. On a phone, the page opens the app full screen, with a bracelet status chip (the phone itself vibrates along with the bracelet) and a **Demo** button. |
+| `index.html` | **Pitch stage.** Shows the **Gotcha bracelet** (the master device: a slim, screenless band with a tiny module holding a vibration motor, an LED and one button) next to the **companion app** in a phone frame. A presenter panel triggers real-life moments with narration and a room map. When you walk away from a tagged item, the bracelet vibrates in pulses and its LED turns red; press its button to stop it. It stops by itself once the item is back in range. It never makes a sound. On a phone, the page opens the app full screen, with a bracelet status chip (the phone itself vibrates along with the bracelet) and a **Demo** button. |
 | `app.html` | **Companion app (optional).** Tells you *which* item was left behind, rings a tag to find it, and manages tags and carry lists. Includes a lock-screen notification. |
 | `js/engine.js` | Alert state machine (the reference for the firmware) plus the demo receiver used until the hardware is ready. |
 | `js/transport.js` | Data source: demo receiver, or the real receiver over Wi-Fi (`docs/API.md`). |
 | `docs/API.md` | Receiver HTTP API, Bluetooth UUIDs and state machine, for the hardware lead. |
-| `firmware/tali_receiver/` | ESP32 Arduino skeleton implementing the API. **Not yet compiled or tested on hardware.** |
+| `firmware/gotcha_receiver/` | ESP32 Arduino skeleton implementing the API. **Not yet compiled or tested on hardware.** |
 
 ## Run it
 
 The two pages must be served over HTTP (not opened as a file), so the presenter can control the app frame.
 
-Tali runs on **port 8001**, so it never clashes with the team's other "Wallet Tracker" page on port 8000.
+Gotcha runs on **port 8001**, so it never clashes with the team's other "Wallet Tracker" page on port 8000.
 
 ### Open it
 
@@ -26,7 +26,7 @@ Tali runs on **port 8001**, so it never clashes with the team's other "Wallet Tr
 
 ### Start the server first
 
-**Windows:** double-click **`start-tali.bat`**. It serves this folder on port 8001 and opens the demo in your browser.
+**Windows:** double-click **`start-gotcha.bat`**. It serves this folder on port 8001 and opens the demo in your browser.
 Or in PowerShell, **inside this folder**:
 
 ```powershell
@@ -42,7 +42,7 @@ python3 -m http.server 8001
 (If macOS offers to install the Command Line Tools, accept, then run the command again.)
 
 Keep that window open while you use the demo; press **Ctrl+C** in it to stop. Don't add `-d website`, which serves a
-different folder. If <http://localhost:8001> shows anything other than the Tali demo, check that you started the
+different folder. If <http://localhost:8001> shows anything other than the Gotcha demo, check that you started the
 server from inside this folder.
 
 **On your phone (same Wi-Fi):** find the laptop's IP address (Windows: `ipconfig`, Mac: System Settings → Wi-Fi → Details),
@@ -59,7 +59,7 @@ Use **Start over** between moments. **Fine control → Speed 2×** shortens wait
 
 ## Switching to the real receiver
 
-App → Settings → Data source → **Receiver (Wi-Fi)**. Join the `Tali-XXXX` Wi-Fi network, then leave the address empty
+App → Settings → Data source → **Receiver (Wi-Fi)**. Join the `Gotcha-XXXX` Wi-Fi network, then leave the address empty
 (if the app is served from the receiver) or enter `http://192.168.4.1`. Nothing else in the UI changes.
 Pages served over HTTPS cannot call an `http://` receiver, so use the receiver-hosted page for the live hardware demo.
 

@@ -1,4 +1,4 @@
-/* Tali engine
+/* Gotcha engine
  * ReceiverLogic: the per-item alert state machine. It is written to mirror what the
  *   ESP32 receiver firmware should do, so the simulator and the real device behave alike.
  * SimWorld: a simulated room (wearer, table, door, tags, a friend) that feeds BLE-like
@@ -141,7 +141,7 @@
       });
     });
     return Object.assign({
-      fw: 'tali-rx 0.4.0', uptime_ms: Math.round(now - this.bootAt),
+      fw: 'gotcha-rx 0.4.0', uptime_ms: Math.round(now - this.bootAt),
       motion: this.moving ? 'moving' : 'still',
       list: this.list,
       config: { confirm_ms: c.confirmMs, drop_ms: c.dropMs, heard_rssi: c.heardRssi },
@@ -428,12 +428,12 @@
     });
   }
 
-  G.Tali = G.Tali || {};
-  G.Tali.ST = ST;
-  G.Tali.DEFAULTS = DEFAULTS;
-  G.Tali.ReceiverLogic = ReceiverLogic;
-  G.Tali.SimWorld = SimWorld;
-  G.Tali.SCENARIOS = SCENARIOS;
-  G.Tali.ROOM = ROOM;
-  G.Tali.runRuleLab = runRuleLab;
+  G.Gotcha = G.Gotcha || {};
+  G.Gotcha.ST = ST;
+  G.Gotcha.DEFAULTS = DEFAULTS;
+  G.Gotcha.ReceiverLogic = ReceiverLogic;
+  G.Gotcha.SimWorld = SimWorld;
+  G.Gotcha.SCENARIOS = SCENARIOS;
+  G.Gotcha.ROOM = ROOM;
+  G.Gotcha.runRuleLab = runRuleLab;
 })(window);

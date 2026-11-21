@@ -1,7 +1,7 @@
-/* Tali Control: dashboard UI */
+/* Gotcha Control: dashboard UI */
 (function () {
   'use strict';
-  var T = window.Tali, ST = T.ST;
+  var T = window.Gotcha, ST = T.ST;
 
   /* ---------------- helpers ---------------- */
   function $(s, r) { return (r || document).querySelector(s); }
@@ -44,9 +44,9 @@
   var ITEM_ICONS = ['wallet', 'pouch', 'keys', 'phone', 'laptop', 'badge', 'bag', 'tag'];
 
   var store = {
-    get: function (k, d) { try { var v = localStorage.getItem('tali.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-    set: function (k, v) { try { localStorage.setItem('tali.' + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
-    del: function (k) { try { localStorage.removeItem('tali.' + k); } catch (e) { /* ignore */ } }
+    get: function (k, d) { try { var v = localStorage.getItem('gotcha.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem('gotcha.' + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
+    del: function (k) { try { localStorage.removeItem('gotcha.' + k); } catch (e) { /* ignore */ } }
   };
 
   function seed() {
@@ -554,7 +554,7 @@
     var n = document.createElement('button');
     n.type = 'button';
     n.className = 'notif';
-    n.innerHTML = '<span class="notif-head"><span class="notif-app"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><circle cx="10" cy="16" r="4"/><circle cx="23" cy="16" r="2.6"/></svg>TALI</span><span>now</span></span>' +
+    n.innerHTML = '<span class="notif-head"><span class="notif-app"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><circle cx="10" cy="16" r="4"/><circle cx="23" cy="16" r="2.6"/></svg>GOTCHA</span><span>now</span></span>' +
       '<b>Check your ' + esc(name) + '</b><span>Your bracelet is vibrating. Left behind as you moved.</span>';
     n.addEventListener('click', function (ev) { ev.stopPropagation(); setLocked(false); goto('today'); });
     $('#lockNotes').insertBefore(n, $('#lockNotes').firstChild);
@@ -566,7 +566,7 @@
     if (!D.tags.length) { box.innerHTML = '<div class="empty">No items yet. Pair your first tag.</div>'; return; }
     box.innerHTML = D.tags.map(function (t) {
       var si = snapItem(t.id), inLists = D.lists.filter(function (l) { return l.tags.indexOf(t.id) >= 0; }).map(function (l) { return l.name; });
-      var kind = t.kind === 'phone' ? 'Phone · paired handset (pilot feature)' : 'Tali tag · ' + t.id;
+      var kind = t.kind === 'phone' ? 'Phone · paired handset (pilot feature)' : 'Gotcha tag · ' + t.id;
       var status = si ? ' · ' + (META[si.state] || META.unknown).label : '';
       return '<div class="card tag-row"><div class="item-icon">' + icon(t.icon) + '</div><div style="min-width:0"><div class="item-name"><span>' + esc(t.name) + '</span></div>' +
         '<div class="tag-meta">' + esc(kind) + esc(status) + '</div><div class="tag-meta">' + (inLists.length ? 'In ' + esc(inLists.join(', ')) : 'Not in any list') + (si && si.battery_pct != null ? ' · ' + batt(si.battery_pct) : '') + '</div></div>' +
@@ -594,7 +594,7 @@
       if (!found.length) { $('#sheetBody').innerHTML = '<p class="muted">No new tags found. Make sure the tag is charged and close to the bracelet.</p><div class="sheet-actions"><button class="btn" type="button" data-close>Close</button></div>'; return; }
       $('#sheetBody').innerHTML = '<p class="muted small">Found ' + found.length + ' tag' + (found.length > 1 ? 's' : '') + '. Choose the one you are holding (it has the strongest signal).</p><div class="scan-list">' +
         found.sort(function (a, b) { return b.rssi - a.rssi; }).map(function (f) {
-          return '<button class="scan-row" type="button" data-pick="' + f.tag_id + '" data-hint="' + esc(f.hint || '') + '">' + icon('tag') + '<span class="grow"><b>' + esc(f.tag_id) + '</b><br><span class="muted small">Tali tag</span></span>' + bars(f.rssi) + '</button>';
+          return '<button class="scan-row" type="button" data-pick="' + f.tag_id + '" data-hint="' + esc(f.hint || '') + '">' + icon('tag') + '<span class="grow"><b>' + esc(f.tag_id) + '</b><br><span class="muted small">Gotcha tag</span></span>' + bars(f.rssi) + '</button>';
         }).join('') + '</div>';
       $$('[data-pick]', $('#sheetBody')).forEach(function (b) { b.addEventListener('click', function () { nameNewTag(b.dataset.pick, b.dataset.hint); }); });
     }, function (err) {
@@ -778,7 +778,7 @@
     var blob = new Blob([lines.join('\n')], { type: 'text/csv' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'tali-log-' + src.toLowerCase() + '-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '') + '.csv';
+    a.download = 'gotcha-log-' + src.toLowerCase() + '-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '') + '.csv';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
@@ -918,7 +918,7 @@
   setInterval(function () { renderLive(); }, 250);
   setInterval(renderLockClock, 10000);
 
-  window.TaliDemo = {
+  window.GotchaDemo = {
     runScenario: runScenario, act: demoAct,
     setSpeed: function (x) { R.speed = x; if (R.transport) R.transport.speed = x; },
     getSpeed: function () { return R.speed; },
@@ -928,5 +928,5 @@
     setLocked: setLocked, isLocked: function () { return !!R.locked; },
     goto: goto, subscribe: function (fn) { listeners.push(fn); }
   };
-  if (window.parent !== window) { try { window.parent.postMessage({ tali: 'ready' }, location.origin); } catch (e) { /* ignore */ } }
+  if (window.parent !== window) { try { window.parent.postMessage({ gotcha: 'ready' }, location.origin); } catch (e) { /* ignore */ } }
 })();

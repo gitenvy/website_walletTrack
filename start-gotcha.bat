@@ -1,13 +1,13 @@
 @echo off
-rem Start the Tali demo. Double-click this file, or run start-tali.bat from any folder.
-rem Always serves THIS folder (the Tali app) on port 8001 (port 8000 is used by the team's other Wallet Tracker page).
+rem Start the Gotcha demo. Double-click this file, or run start-gotcha.bat from any folder.
+rem Always serves THIS folder (the Gotcha app) on port 8001 (port 8000 is used by the team's other Wallet Tracker page).
 
 cd /d "%~dp0"
 set PORT=8001
 
 netstat -ano | findstr /R /C:":%PORT% .*LISTENING" >nul
 if not errorlevel 1 (
-  echo Port %PORT% is already in use. If Tali is already running, just open http://localhost:%PORT%
+  echo Port %PORT% is already in use. If Gotcha is already running, just open http://localhost:%PORT%
   echo Otherwise close the other program using port %PORT% and try again.
   start "" "http://localhost:%PORT%"
   pause
@@ -22,7 +22,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo   Tali demo:  http://localhost:%PORT%
+echo   Gotcha demo:  http://localhost:%PORT%
 echo   App only:   http://localhost:%PORT%/app.html
 echo   Press Ctrl+C in this window to stop.
 echo.

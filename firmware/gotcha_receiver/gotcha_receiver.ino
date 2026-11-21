@@ -1,5 +1,5 @@
 /*
- * Tali receiver: reference skeleton for the ESP32 receiver (Arduino core 3.x).
+ * Gotcha receiver: reference skeleton for the ESP32 receiver (Arduino core 3.x).
  *
  * Implements the HTTP API in docs/API.md and ports the alert state machine from js/engine.js.
  * NOT YET COMPILED OR TESTED ON HARDWARE. Treat it as a starting point for the hardware lead.
@@ -32,8 +32,8 @@ struct Config {
   int      heardRssi = -80;
 } cfg;
 
-static NimBLEUUID TALI_SERVICE("7a1e0001-5a1f-4c3b-9d1e-7a11b0000001");
-static NimBLEUUID TALI_RING("7a1e0002-5a1f-4c3b-9d1e-7a11b0000001");
+static NimBLEUUID GOTCHA_SERVICE("7a1e0001-5a1f-4c3b-9d1e-7a11b0000001");
+static NimBLEUUID GOTCHA_RING("7a1e0002-5a1f-4c3b-9d1e-7a11b0000001");
 
 // ---------------- items ----------------
 enum State : uint8_t { WAITING, NEARBY, RECHECKING, AWAY, CHECK, RECOVERED };
@@ -77,8 +77,8 @@ void emit(const char* type, Item* it, const char* fmt, ...) {
 
 // ---------------- persistence ----------------
 Preferences prefs;
-void saveList(const String& json) { prefs.begin("tali", false); prefs.putString("list", json); prefs.end(); }
-void saveConfig() { prefs.begin("tali", false); prefs.putUInt("confirm", cfg.confirmMs); prefs.putInt("rssi", cfg.heardRssi); prefs.end(); }
+void saveList(const String& json) { prefs.begin("gotcha", false); prefs.putString("list", json); prefs.end(); }
+void saveConfig() { prefs.begin("gotcha", false); prefs.putUInt("confirm", cfg.confirmMs); prefs.putInt("rssi", cfg.heardRssi); prefs.end(); }
 
 bool applyList(JsonDocument& doc) {
   JsonArray tags = doc["tags"].as<JsonArray>();
@@ -102,7 +102,7 @@ bool applyList(JsonDocument& doc) {
 }
 
 void loadPersisted() {
-  prefs.begin("tali", true);
+  prefs.begin("gotcha", true);
   cfg.confirmMs = prefs.getUInt("confirm", cfg.confirmMs);
   cfg.heardRssi = prefs.getInt("rssi", cfg.heardRssi);
   String json = prefs.getString("list", "");
@@ -122,7 +122,7 @@ static QueueHandle_t advQueue;
 
 class ScanCB : public NimBLEAdvertisedDeviceCallbacks {
   void onResult(NimBLEAdvertisedDevice* d) override {
-    if (!d->isAdvertisingService(TALI_SERVICE)) return;
+    if (!d->isAdvertisingService(GOTCHA_SERVICE)) return;
     std::string md = d->getManufacturerData();   // [0..1] company id, [2] battery, [3..] tag id
     if (md.size() < 4) return;
     Adv a{};
@@ -213,8 +213,8 @@ void tickItems(uint32_t now) {
 
 // ---------------- ringing (toggle) ----------------
 bool writeRing(NimBLEClient* c, uint8_t v) {
-  NimBLERemoteService* s = c->getService(TALI_SERVICE);
-  NimBLERemoteCharacteristic* ch = s ? s->getCharacteristic(TALI_RING) : nullptr;
+  NimBLERemoteService* s = c->getService(GOTCHA_SERVICE);
+  NimBLERemoteCharacteristic* ch = s ? s->getCharacteristic(GOTCHA_RING) : nullptr;
   return ch && ch->writeValue(&v, 1, true);
 }
 
@@ -265,7 +265,7 @@ void sendJson(int code, JsonDocument& doc) { cors(); String out; serializeJson(d
 void handleStatus() {
   uint32_t now = millis();
   JsonDocument d;
-  d["receiver"] = "Tali Band"; d["fw"] = "tali-rx 0.4.0"; d["uptime_ms"] = now;
+  d["receiver"] = "Gotcha Band"; d["fw"] = "gotcha-rx 0.4.0"; d["uptime_ms"] = now;
   d["battery_pct"] = 86;   // TODO: read the battery ADC
   d["motion"] = moving ? "moving" : "still";
   d["heap"] = ESP.getFreeHeap();
@@ -324,7 +324,7 @@ void handleConfig() {
 }
 
 void handleScan() {
-  // TODO: track unpaired Tali tags seen in drainAdverts() and list them here, strongest first.
+  // TODO: track unpaired Gotcha tags seen in drainAdverts() and list them here, strongest first.
   JsonDocument res; res["tags"].to<JsonArray>(); sendJson(200, res);
 }
 
@@ -354,9 +354,9 @@ void setup() {
   loadPersisted();
 
   uint8_t mac[6]; WiFi.macAddress(mac);
-  char ssid[16]; snprintf(ssid, sizeof ssid, "Tali-%02X%02X", mac[4], mac[5]);
+  char ssid[16]; snprintf(ssid, sizeof ssid, "Gotcha-%02X%02X", mac[4], mac[5]);
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, "tali1234");                    // TODO: per-device password printed on the box
+  WiFi.softAP(ssid, "gotcha1234");                    // TODO: per-device password printed on the box
   WiFi.setSleep(true);                              // required for Wi-Fi + BLE coexistence
 
   NimBLEDevice::init("");

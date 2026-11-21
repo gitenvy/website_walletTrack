@@ -1,4 +1,4 @@
-/* Tali pitch stage: drives the app inside the phone frame and narrates each moment */
+/* Gotcha pitch stage: drives the app inside the phone frame and narrates each moment */
 (function () {
   'use strict';
   function $(s, r) { return (r || document).querySelector(s); }
@@ -19,7 +19,7 @@
       { on: 'alert', t: 'Before you reach the door, your bracelet vibrates on your wrist and its light turns red. The companion app tells you which item: the {item}.', alert: true, next: 'Press "Walk back", or press the bracelet button to stop the vibration.' },
       { on: 'recovered', t: 'Back at the table, the {item} is in range again and the bracelet stops vibrating by itself. Can\'t see it? Make the tag beep from the app.', next: 'Tap "Ring" on the Wallet card in the app, then "Stop ringing" once you find it.' }
     ] },
-    { k: 'carry', title: 'You leave with everything', desc: 'Everything goes in your bag. Tali should stay silent.', steps: [
+    { k: 'carry', title: 'You leave with everything', desc: 'Everything goes in your bag. Gotcha should stay silent.', steps: [
       { at: 0, t: 'Your {item}, pouch and {phone} all go in your bag.' },
       { at: 1500, t: 'You walk out.', lock: true },
       { on: 'quiet', t: 'You are outside and the bracelet never rang. No false alarms when nothing is missing.' }
@@ -49,7 +49,7 @@
   /* ---------------- connect to the app ---------------- */
   function attach() {
     if (demo) return;
-    try { appWin = iframe.contentWindow; demo = appWin.TaliDemo; } catch (e) { $('#fileNotice').hidden = false; return; }
+    try { appWin = iframe.contentWindow; demo = appWin.GotchaDemo; } catch (e) { $('#fileNotice').hidden = false; return; }
     if (!demo) return;
     demo.subscribe(onApp);
     renderMoments();
@@ -61,7 +61,7 @@
     attach();
     if (!demo) setTimeout(function () { attach(); if (!demo) $('#fileNotice').hidden = false; }, 1200);
   });
-  window.addEventListener('message', function (e) { if (e.origin === location.origin && e.data && e.data.tali === 'ready') attach(); });
+  window.addEventListener('message', function (e) { if (e.origin === location.origin && e.data && e.data.gotcha === 'ready') attach(); });
 
   function onApp(type, data) {
     if (type === 'alert') {
@@ -310,7 +310,7 @@
   $('#runLab').addEventListener('click', function () {
     var b = $('#runLab'); b.textContent = 'Running…'; b.disabled = true;
     setTimeout(function () {
-      var res = window.Tali.runRuleLab({ runs: 20 });
+      var res = window.Gotcha.runRuleLab({ runs: 20 });
       b.textContent = 'Run again'; b.disabled = false;
       $('#labTable').innerHTML = '<thead><tr><th>Rule</th><th>Before door</th><th>After door</th><th>Missed</th><th>Median</th><th>Bag: false alerts</th></tr></thead><tbody>' +
         res.map(function (r) {

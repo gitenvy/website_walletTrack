@@ -1,4 +1,4 @@
-# Tali receiver API (v0.4)
+# Gotcha receiver API (v0.4)
 
 The phone app talks to the receiver (ESP32) over plain HTTP + JSON on the receiver's Wi-Fi.
 The simulator in `js/engine.js` and `js/transport.js` implements exactly this contract, so the
@@ -8,7 +8,7 @@ app works the same with the real board once the firmware matches it.
 
 | Item | Value |
 | --- | --- |
-| Receiver Wi-Fi (AP mode) | SSID `Tali-XXXX` (last 4 hex of MAC), WPA2 |
+| Receiver Wi-Fi (AP mode) | SSID `Gotcha-XXXX` (last 4 hex of MAC), WPA2 |
 | Base URL | `http://192.168.4.1` |
 | Recommended | Serve `app.html`, `css/`, `js/` from the receiver's LittleFS so the app is same-origin. Then leave **Receiver address** empty in Settings. |
 | CORS | If the app is hosted elsewhere, answer every route (including `OPTIONS` preflight) with `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers: Content-Type`, `Access-Control-Allow-Methods: GET, POST, OPTIONS`. |
@@ -24,8 +24,8 @@ The app polls `GET /api/status` every **700 ms**. If no good response arrives fo
 
 ```json
 {
-  "receiver": "Tali Band",
-  "fw": "tali-rx 0.4.0",
+  "receiver": "Gotcha Band",
+  "fw": "gotcha-rx 0.4.0",
   "uptime_ms": 183422,
   "battery_pct": 86,
   "motion": "moving",
@@ -83,7 +83,7 @@ and every item starts in `waiting`; it arms only after it has seen each item.
 
 ## `GET /api/scan`
 
-Unpaired Tali tags currently advertising, strongest first:
+Unpaired Gotcha tags currently advertising, strongest first:
 ```json
 { "tags": [ { "tag_id": "tag-4f2a", "rssi": -48, "kind": "tag" } ] }
 ```
@@ -101,7 +101,7 @@ Unpaired Tali tags currently advertising, strongest first:
 
 | | UUID |
 | --- | --- |
-| Tali service (advertised) | `7a1e0001-5a1f-4c3b-9d1e-7a11b0000001` |
+| Gotcha service (advertised) | `7a1e0001-5a1f-4c3b-9d1e-7a11b0000001` |
 | Ring characteristic (write 1 byte: `0xFF` ring until stopped, `0x00` stop) | `7a1e0002-5a1f-4c3b-9d1e-7a11b0000001` |
 | Battery | Standard Battery Service `0x180F`, or byte 0 of manufacturer data |
 

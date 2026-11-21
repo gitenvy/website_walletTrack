@@ -41,7 +41,7 @@
   SimTransport.prototype._emit = function () {
     var w = this.world;
     if (!w.rx || !this.linkUp()) return;
-    this.onSnap(w.rx.snapshot(w.t, { receiver: 'Tali Bracelet', battery_pct: Math.round(w.rxBattery) }));
+    this.onSnap(w.rx.snapshot(w.t, { receiver: 'Gotcha Bracelet', battery_pct: Math.round(w.rxBattery) }));
   };
 
   SimTransport.prototype._later = function (fn) {
@@ -133,7 +133,7 @@
     return this._req('/api/config', 'POST', { confirm_ms: cfg.confirmMs, heard_rssi: cfg.heardRssi });
   };
 
-  G.Tali = G.Tali || {};
-  G.Tali.SimTransport = SimTransport;
-  G.Tali.HttpTransport = HttpTransport;
+  G.Gotcha = G.Gotcha || {};
+  G.Gotcha.SimTransport = SimTransport;
+  G.Gotcha.HttpTransport = HttpTransport;
 })(window);
