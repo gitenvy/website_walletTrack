@@ -404,3 +404,96 @@ body.framed .toasts { bottom: calc(var(--tabbar-h) + 30px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
 }
+
+/* ==========================================================================
+   "Still Water + colour tags" theme (from the 05 Full page design reference).
+   Calm off-white surfaces, ink text, one teal accent, and a colour per tag.
+   Applied in every colour scheme so the demo always matches the design.
+   ========================================================================== */
+:root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+  --bg: #F6F6F3; --surface: #FFFFFF; --surface-2: #ECEEEA; --text: #15191C; --muted: #4F575E;
+  --line: #DEE2DD; --line-strong: #C9CEC9;
+  --accent: #0E7C7B; --accent-ink: #FFFFFF; --accent-soft: #DCEEED; --accent-deep: #0A5F5E;
+  --ok: #0E7C7B;   --ok-soft: #DCEEED;
+  --warn: #B07A12; --warn-soft: #FBF0D2;
+  --alert: #C8553D; --alert-soft: #FBE5DD;
+  --idle: #4F575E; --idle-soft: #ECEEEA;
+  --info: #0A5F5E; --info-soft: #DCEEED;
+  --tag-coral: #FF9A76; --tag-yellow: #F6C945; --tag-mint: #7FD3B8; --tag-ink: #15191C;
+  --shadow: none;
+  --radius: 20px; --radius-sm: 14px;
+  --font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --display: "Inter Tight", Inter, system-ui, sans-serif;
+  color-scheme: light;
+}
+body { font-family: var(--font); }
+h1, h2, h3, .hero-title, .brand-name, .page-head h1 { font-family: var(--display); font-weight: 600; letter-spacing: -.02em; }
+h4, .eyebrow { color: var(--accent-deep); letter-spacing: .1em; }
+
+/* bars and navigation */
+.topbar, body.framed .statusbar { background: color-mix(in srgb, var(--bg) 92%, transparent); }
+.topbar { border-bottom-color: var(--line); }
+.brand-name { font-weight: 700; }
+.link-chip { background: var(--surface); border-color: var(--line); }
+.tabbar { background: color-mix(in srgb, var(--bg) 94%, transparent); border-top-color: var(--line); }
+.nav-btn[aria-current="page"] { color: var(--accent); }
+.nav-btn .badge { background: var(--tag-coral); color: var(--text); font-weight: 700; }
+
+/* cards: flat white, hairline border, generous radius */
+.card, .item-card, .kpi { box-shadow: none; border-color: var(--line); }
+.hero { border-radius: 24px; padding: 20px; }
+.hero::before { background: none; }
+.hero[data-tone="alert"] { background: var(--alert-soft); border-color: color-mix(in srgb, var(--alert) 35%, transparent); }
+.hero[data-tone="ok"] .band-art .led { fill: var(--accent); }
+.hero-title { font-size: 26px; letter-spacing: -.035em; line-height: 1.05; }
+.band-art .strap { stroke: #C9CEC9; }
+.band-art .pod { fill: #FFFFFF; stroke: #C9CEC9; }
+.pill { background: var(--surface-2); color: var(--text); font-weight: 600; }
+.pill.ok, .pill.accent, .pill.info { background: var(--accent-soft); color: var(--accent-deep); }
+.pill.alert { background: var(--alert-soft); color: var(--alert); }
+
+/* item rows: colour tag square + name + status, as in the design's "My items" screen */
+.item-card { border-radius: 16px; padding: 12px 12px 12px 12px; gap: 2px 12px; }
+.item-card::before { display: none; }
+.item-card[data-tone="alert"] { background: var(--alert-soft); border-color: color-mix(in srgb, var(--alert) 40%, transparent); }
+.item-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--tag-mint); color: #FFFFFF; }
+.item-icon svg.i { width: 21px; height: 21px; stroke-width: 2; }
+.item-icon[data-ic="wallet"] { background: var(--tag-coral); }
+.item-icon[data-ic="pouch"], .item-icon[data-ic="keys"] { background: var(--tag-yellow); color: var(--text); }
+.item-icon[data-ic="laptop"], .item-icon[data-ic="bag"] { background: var(--tag-mint); color: var(--text); }
+.item-icon[data-ic="phone"] { background: var(--tag-ink); }
+.tag-row .item-icon { --state: initial; }
+.item-name { font-weight: 600; font-size: 15.5px; }
+.item-state { background: var(--accent-soft); color: var(--accent-deep); }
+.item-card[data-tone="alert"] .item-state { background: var(--alert); color: #FFFFFF; }
+.item-card[data-tone="warn"] .item-state { background: var(--warn-soft); color: var(--warn); }
+.item-detail { color: var(--muted); }
+.bars b.on { background: var(--accent); }
+
+/* buttons: pill shapes, teal primary, tinted secondary like the design's "Ring" chip */
+.btn { border-radius: 999px; border-color: var(--line); }
+.btn.primary { background: var(--accent); }
+.btn.sm { border-radius: 999px; background: var(--accent-soft); border-color: transparent; color: var(--accent-deep); }
+.btn.sm:hover { background: #cfe6e4; }
+.btn.ringing, .btn.sm.ringing { background: var(--tag-coral); color: var(--text); }
+.ringing-now { color: var(--alert); }
+.seg { border-radius: 999px; } .seg button { border-radius: 999px; }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+/* left-behind alert: calm ink banner with a coral tag, not an alarm-red slab */
+.alert-banner { background: var(--text); color: #F6F6F3; box-shadow: 0 14px 40px rgba(21, 25, 28, .28); border-radius: 22px; }
+.alert-icon { background: var(--tag-coral); color: var(--text); border-radius: 12px; }
+.alert-text strong { font-family: var(--display); font-weight: 600; letter-spacing: -.01em; }
+.btn.light { background: #FFFFFF; color: var(--text); }
+.btn.ghost-light { background: rgba(255, 255, 255, .14); color: #FFFFFF; }
+
+/* toasts, sheets */
+.toast { background: var(--text); color: #F6F6F3; border-radius: 16px; }
+.sheet { border-radius: 26px 26px 0 0; }
+
+/* lock screen in the same palette */
+.lock { background: radial-gradient(110% 70% at 20% 0%, rgba(14, 124, 123, .55) 0%, transparent 60%), radial-gradient(90% 70% at 100% 100%, rgba(127, 211, 184, .18) 0%, transparent 60%), #15191C; }
+.lock-time { font-family: var(--display); font-weight: 600; letter-spacing: -.04em; }
+.notif { background: rgba(246, 246, 243, .16); border-radius: 22px; }
+.notif-app svg rect { fill: var(--accent); }
+.notif-app svg circle { fill: #FFFFFF; }

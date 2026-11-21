@@ -207,6 +207,7 @@ a { color: var(--accent); }
 .phone-wrap { transform: none !important; }
 .bracelet { width: 320px; display: grid; justify-items: center; gap: 14px; text-align: center; }
 .band-svg { width: 300px; height: 300px; overflow: visible; }
+.band-3d { width: 300px !important; height: 300px !important; display: block; outline: none; -webkit-tap-highlight-color: transparent; }
 .band-svg .band-back { fill: none; stroke: #2c3037; stroke-width: 13; stroke-linecap: round; }
 .band-svg .band-front { fill: none; stroke: #4d535d; stroke-width: 15; stroke-linecap: round; }
 .band-svg .pod { fill: #2b2f35; stroke: #555b65; stroke-width: 1.5; }

@@ -443,6 +443,7 @@
       el.dataset.tone = v.meta.tone;
       el.classList.toggle('stale', link === 'stale');
       setHTML(el.querySelector('.item-icon'), icon(m.tag.icon));
+      el.querySelector('.item-icon').dataset.ic = m.tag.icon;
       setText(el.querySelector('.nm'), m.tag.name);
       setText(el.querySelector('.item-state'), v.meta.label);
       var detail;
@@ -568,7 +569,7 @@
       var si = snapItem(t.id), inLists = D.lists.filter(function (l) { return l.tags.indexOf(t.id) >= 0; }).map(function (l) { return l.name; });
       var kind = t.kind === 'phone' ? 'Phone · paired handset (pilot feature)' : 'Gotcha tag · ' + t.id;
       var status = si ? ' · ' + (META[si.state] || META.unknown).label : '';
-      return '<div class="card tag-row"><div class="item-icon">' + icon(t.icon) + '</div><div style="min-width:0"><div class="item-name"><span>' + esc(t.name) + '</span></div>' +
+      return '<div class="card tag-row"><div class="item-icon" data-ic="' + esc(t.icon) + '">' + icon(t.icon) + '</div><div style="min-width:0"><div class="item-name"><span>' + esc(t.name) + '</span></div>' +
         '<div class="tag-meta">' + esc(kind) + esc(status) + '</div><div class="tag-meta">' + (inLists.length ? 'In ' + esc(inLists.join(', ')) : 'Not in any list') + (si && si.battery_pct != null ? ' · ' + batt(si.battery_pct) : '') + '</div></div>' +
         '<div class="tag-actions">' + (t.kind !== 'phone' ? '<button class="btn sm" type="button" data-ring="' + t.id + '">Ring</button>' : '') +
         '<button class="btn sm" type="button" data-edit="' + t.id + '">Edit</button><button class="btn sm danger" type="button" data-remove="' + t.id + '">Remove</button></div></div>';
