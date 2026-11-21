@@ -4,8 +4,8 @@ Phone app and pitch demo for the wearable that taps your wrist before you leave 
 
 | File | What it is |
 | --- | --- |
-| `index.html` | **Pitch stage.** On a laptop or projector, the app runs inside a phone frame and a presenter panel triggers real-life moments with narration, the wristband tap and a room map. On a phone it opens the app full screen, with a small **Demo** button. |
-| `app.html` | **The phone app.** Today's carry, My items, Carry lists, Activity and Settings. Includes a lock-screen notification when an item is left behind. |
+| `index.html` | **Pitch stage.** Shows the **Tali bracelet** (the master device: a slim, screenless band with a tiny module holding a vibration motor, an LED and one button) next to the **companion app** in a phone frame. A presenter panel triggers real-life moments with narration and a room map. When you walk away from a tagged item, the bracelet vibrates in pulses and its LED turns red; press its button to stop it. It stops by itself once the item is back in range. It never makes a sound. On a phone, the page opens the app full screen, with a bracelet status chip (the phone itself vibrates along with the bracelet) and a **Demo** button. |
+| `app.html` | **Companion app (optional).** Tells you *which* item was left behind, rings a tag to find it, and manages tags and carry lists. Includes a lock-screen notification. |
 | `js/engine.js` | Alert state machine (the reference for the firmware) plus the demo receiver used until the hardware is ready. |
 | `js/transport.js` | Data source: demo receiver, or the real receiver over Wi-Fi (`docs/API.md`). |
 | `docs/API.md` | Receiver HTTP API, Bluetooth UUIDs and state machine, for the hardware lead. |

@@ -80,7 +80,7 @@
     check:      { label: 'Check item',   tone: 'alert', desc: 'Left behind as you moved' },
     recovered:  { label: 'Recovered',    tone: 'ok',    desc: 'Back with you' },
     unknown:    { label: 'Unknown',      tone: 'idle',  desc: 'No current data' },
-    unsaved:    { label: 'Not on receiver', tone: 'idle', desc: 'Save the list to start monitoring' }
+    unsaved:    { label: 'Not on bracelet', tone: 'idle', desc: 'Save the list to start monitoring' }
   };
   var TONE_VAR = { ok: 'var(--ok)', warn: 'var(--warn)', alert: 'var(--alert)', idle: 'var(--idle)', info: 'var(--info)' };
 
@@ -198,16 +198,16 @@
   /* What the receiver actually holds, compared with what the app wants */
   function syncStatus() {
     var s = R.sync;
-    if (s.state === 'saving') return { cls: 'saving', text: 'Saving to receiver…', spin: true };
-    if (s.state === 'pending') return { cls: 'saving', text: 'Saving to receiver…', spin: true };
-    if (s.state === 'failed') return { cls: 'failed', text: 'Not saved: receiver did not confirm', retry: true };
+    if (s.state === 'saving') return { cls: 'saving', text: 'Saving to bracelet…', spin: true };
+    if (s.state === 'pending') return { cls: 'saving', text: 'Saving to bracelet…', spin: true };
+    if (s.state === 'failed') return { cls: 'failed', text: 'Not saved: bracelet did not confirm', retry: true };
     if (R.snap && D.saved) {
       var l = R.snap.list;
-      if (!l || l.id !== D.activeList || l.rev !== D.saved.rev) return { cls: 'pending', text: 'Receiver has a different list', retry: true };
-      return { cls: 'saved', text: 'Saved on receiver · rev ' + l.rev };
+      if (!l || l.id !== D.activeList || l.rev !== D.saved.rev) return { cls: 'pending', text: 'Bracelet has a different list', retry: true };
+      return { cls: 'saved', text: 'Saved on bracelet · rev ' + l.rev };
     }
-    if (D.saved && D.saved.listId === D.activeList) return { cls: 'pending', text: 'Waiting for receiver to confirm' };
-    return { cls: 'pending', text: 'Not saved to receiver yet', retry: true };
+    if (D.saved && D.saved.listId === D.activeList) return { cls: 'pending', text: 'Waiting for bracelet to confirm' };
+    return { cls: 'pending', text: 'Not saved to bracelet yet', retry: true };
   }
 
   /* ---------------- ringing ---------------- */
@@ -287,7 +287,7 @@
     var t = tagById(e.tag_id);
     R.banner = e.tag_id;
     $('#alertTitle').textContent = 'Check your ' + (t ? t.name : e.name);
-    $('#alertSub').textContent = 'Left behind as you moved · ' + clock(Date.now());
+    $('#alertSub').textContent = 'Your bracelet is vibrating · ' + clock(Date.now());
     $('.alert-icon').innerHTML = icon(t ? t.icon : 'bell');
     $('#alertBanner').hidden = false;
     var art = $('#bandArt');
@@ -362,16 +362,16 @@
     var check = byState('check'), rech = byState('rechecking'), wait = byState('waiting'), away = byState('away');
     var rec = byState('recovered');
     var age = R.snapAt ? now() - R.snapAt : null;
-    if (!list || !list.tags.length) { title = 'Choose what to carry'; sub = 'Pick a carry list so the receiver knows what to watch.'; }
-    else if (link === 'connecting') { title = 'Connecting to receiver…'; sub = D.settings.mode === 'live' ? 'Polling ' + (D.settings.url || 'this device') + '/api/status' : ''; }
-    else if (link === 'offline') { title = 'Receiver offline'; sub = R.snapAt ? 'No update for ' + Math.round(age / 1000) + ' s. Item status below is unknown, not "safe".' : 'No response yet. Check the receiver is on and you are on its Wi-Fi.'; }
-    else if (!R.snap.list || R.snap.list.id !== list.id) { title = 'List not on receiver'; sub = 'Save "' + list.name + '" so the receiver starts watching.'; }
-    else if (check.length) { tone = 'alert'; title = 'Check your ' + joinNames(check); sub = 'Left behind as you moved. Head back, then ring it to find it.'; }
-    else if (rech.length) { tone = 'warn'; title = 'Rechecking ' + joinNames(rech) + '…'; sub = 'Signal dropped. Waiting for more readings before tapping you.'; }
+    if (!list || !list.tags.length) { title = 'Choose what to carry'; sub = 'Pick a carry list so the bracelet knows what to watch.'; }
+    else if (link === 'connecting') { title = 'Connecting to bracelet…'; sub = D.settings.mode === 'live' ? 'Polling ' + (D.settings.url || 'this device') + '/api/status' : ''; }
+    else if (link === 'offline') { title = 'Bracelet offline'; sub = R.snapAt ? 'No update for ' + Math.round(age / 1000) + ' s. Item status below is unknown, not "safe".' : 'No response yet. Check the bracelet is on and you are on its Wi-Fi.'; }
+    else if (!R.snap.list || R.snap.list.id !== list.id) { title = 'List not on bracelet'; sub = 'Save "' + list.name + '" so the bracelet starts watching.'; }
+    else if (check.length) { tone = 'alert'; title = 'Check your ' + joinNames(check); sub = 'Your bracelet is vibrating. Head back, then ring the tag to find it.'; }
+    else if (rech.length) { tone = 'warn'; title = 'Rechecking ' + joinNames(rech) + '…'; sub = 'Signal dropped. Waiting for more readings before the bracelet vibrates.'; }
     else if (rec.length) { tone = 'ok'; title = 'Found it: ' + joinNames(rec) + ' is back'; sub = 'Back in range. Tap Ring if you still cannot see it.'; }
-    else if (wait.length) { title = 'Waiting for ' + joinNames(wait); sub = 'Bring it near the receiver to arm monitoring.'; }
+    else if (wait.length) { title = 'Waiting for ' + joinNames(wait); sub = 'Bring it near the bracelet to arm monitoring.'; }
     else if (away.length) { tone = 'ok'; title = (items.length - away.length) + ' of ' + items.length + ' items with you'; sub = joinNames(away) + ' left while you were sitting still, so no alert (loan rule).'; }
-    else { tone = 'ok'; title = items.length === 1 ? 'Your ' + items[0].tag.name.toLowerCase() + ' is with you' : 'All ' + items.length + ' items with you'; sub = away.length ? joinNames(away) + ' left while you were sitting still, so no alert (loan rule).' : 'Put your phone away. The wearable taps you if something stays behind.'; }
+    else { tone = 'ok'; title = items.length === 1 ? 'Your ' + items[0].tag.name.toLowerCase() + ' is with you' : 'All ' + items.length + ' items with you'; sub = away.length ? joinNames(away) + ' left while you were sitting still, so no alert (loan rule).' : 'Your bracelet vibrates if something stays behind. You can keep your phone in your pocket.'; }
     if (link === 'stale') { sub = 'Last update ' + Math.round(age / 1000) + ' s ago. Reconnecting…'; }
 
     var hero = $('#hero');
@@ -474,10 +474,10 @@
   function renderLinkChip(link) {
     var chip = $('#linkChip'), txt;
     chip.dataset.link = link;
-    var nm = (R.snap && R.snap.receiver) || 'Receiver';
+    var nm = (R.snap && R.snap.receiver) || 'Bracelet';
     if (link === 'live') txt = nm + ' · Connected';
     else if (link === 'stale') txt = 'Stale · ' + Math.round((now() - R.snapAt) / 1000) + ' s';
-    else if (link === 'offline') txt = 'Receiver offline';
+    else if (link === 'offline') txt = 'Bracelet offline';
     else txt = 'Connecting…';
     setText(chip.querySelector('.link-text'), txt);
   }
@@ -487,7 +487,7 @@
     var link = linkState();
     if (link !== lastLink) {
       if (lastLink === 'live' && link === 'stale') logLocal('link', 'Dashboard lost its link. Showing last known status as stale');
-      if (link === 'offline' && lastLink && lastLink !== 'connecting') logLocal('link', 'Receiver offline. Item status unknown');
+      if (link === 'offline' && lastLink && lastLink !== 'connecting') logLocal('link', 'Bracelet offline. Item status unknown');
       if (link === 'live' && (lastLink === 'stale' || lastLink === 'offline')) logLocal('link', 'Link restored');
       lastLink = link;
     }
@@ -555,7 +555,7 @@
     n.type = 'button';
     n.className = 'notif';
     n.innerHTML = '<span class="notif-head"><span class="notif-app"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9"/><circle cx="10" cy="16" r="4"/><circle cx="23" cy="16" r="2.6"/></svg>TALI</span><span>now</span></span>' +
-      '<b>Check your ' + esc(name) + '</b><span>Left behind as you moved. Tap to ring it once you are back in range.</span>';
+      '<b>Check your ' + esc(name) + '</b><span>Your bracelet is vibrating. Left behind as you moved.</span>';
     n.addEventListener('click', function (ev) { ev.stopPropagation(); setLocked(false); goto('today'); });
     $('#lockNotes').insertBefore(n, $('#lockNotes').firstChild);
   }
@@ -588,10 +588,10 @@
   function pickedIcon(root) { var b = $('.icon-pick [aria-pressed="true"]', root); return b ? b.dataset.icon : 'tag'; }
 
   function openAddTag() {
-    openSheet('Add a tag', '<div class="pulse-radar"></div><p class="muted" style="text-align:center">Looking for tags near your receiver…<br><span class="small">Hold the new tag close to the band.</span></p>');
+    openSheet('Add a tag', '<div class="pulse-radar"></div><p class="muted" style="text-align:center">Looking for tags near your bracelet…<br><span class="small">Hold the new tag close to the band.</span></p>');
     R.transport.scan(D.tags.map(function (t) { return t.id; })).then(function (found) {
       if ($('#sheet').hidden) return;
-      if (!found.length) { $('#sheetBody').innerHTML = '<p class="muted">No new tags found. Make sure the tag is charged and close to the receiver.</p><div class="sheet-actions"><button class="btn" type="button" data-close>Close</button></div>'; return; }
+      if (!found.length) { $('#sheetBody').innerHTML = '<p class="muted">No new tags found. Make sure the tag is charged and close to the bracelet.</p><div class="sheet-actions"><button class="btn" type="button" data-close>Close</button></div>'; return; }
       $('#sheetBody').innerHTML = '<p class="muted small">Found ' + found.length + ' tag' + (found.length > 1 ? 's' : '') + '. Choose the one you are holding (it has the strongest signal).</p><div class="scan-list">' +
         found.sort(function (a, b) { return b.rssi - a.rssi; }).map(function (f) {
           return '<button class="scan-row" type="button" data-pick="' + f.tag_id + '" data-hint="' + esc(f.hint || '') + '">' + icon('tag') + '<span class="grow"><b>' + esc(f.tag_id) + '</b><br><span class="muted small">Tali tag</span></span>' + bars(f.rssi) + '</button>';
@@ -676,7 +676,7 @@
         '<div class="row gap"><button class="btn ghost sm" type="button" data-rename-list="' + l.id + '">Rename</button>' + (D.lists.length > 1 ? '<button class="btn ghost sm danger" type="button" data-del-list="' + l.id + '">Delete</button>' : '') + '</div></div>' +
         '<div class="chips">' + (chips || '<span class="muted small">Pair a tag first.</span>') + '</div>' +
         '<div class="list-foot">' + (active ? '<span class="sync-state" data-sync></span>' : '<span class="muted small">Not active</span>') +
-        (active ? '<button class="btn sm" type="button" data-retry hidden>Save to receiver</button>' : '<button class="btn primary sm" type="button" data-activate="' + l.id + '">Use today</button>') + '</div></div>';
+        (active ? '<button class="btn sm" type="button" data-retry hidden>Save to bracelet</button>' : '<button class="btn primary sm" type="button" data-activate="' + l.id + '">Use today</button>') + '</div></div>';
     }).join('');
     renderSyncBits();
   }
@@ -750,7 +750,7 @@
           '<button class="btn sm' + (a.mark === 'nuisance' ? ' primary' : '') + '" type="button" data-mark="' + a.id + '" data-v="nuisance">Nuisance</button></div></td></tr>';
       }).join('');
       $('#trialTable').innerHTML = '<thead><tr><th>#</th><th>Time</th><th>Item</th><th>Was it real?</th></tr></thead><tbody>' +
-        (rows2 || '<tr class="empty-row"><td colspan="4">No alerts yet. Each alert from the receiver appears here for you to classify.</td></tr>') + '</tbody>';
+        (rows2 || '<tr class="empty-row"><td colspan="4">No alerts yet. Each alert from the bracelet appears here for you to classify.</td></tr>') + '</tbody>';
     }
     $('#kpis').innerHTML = k.map(function (x) { return '<div class="kpi"><div class="k">' + esc(x.k) + '</div><div class="v">' + esc(String(x.v)) + '</div><div class="s">' + esc(x.s) + '</div></div>'; }).join('');
     renderEvents();
@@ -808,8 +808,8 @@
     save();
     if (!R.transport) return;
     R.transport.setConfig({ confirmMs: D.settings.confirmMs, heardRssi: D.settings.heardRssi }).then(function () {
-      toast('Receiver updated: ' + (D.settings.confirmMs ? D.settings.confirmMs / 1000 + ' s rule' : 'immediate rule') + ', ' + D.settings.heardRssi + ' dBm');
-    }, function (e) { toast('Could not update receiver: ' + e.message, 'err'); });
+      toast('Bracelet updated: ' + (D.settings.confirmMs ? D.settings.confirmMs / 1000 + ' s rule' : 'immediate rule') + ', ' + D.settings.heardRssi + ' dBm');
+    }, function (e) { toast('Could not update bracelet: ' + e.message, 'err'); });
   }
 
   /* ---------------- sheet ---------------- */
